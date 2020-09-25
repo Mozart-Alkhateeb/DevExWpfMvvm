@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using System.Windows.Input;
 
 namespace DevExWpfMvvm.ViewModels
 {
@@ -36,10 +37,6 @@ namespace DevExWpfMvvm.ViewModels
 
     public class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
-        {
-        }
-
         public string FirstName
         {
             get { return GetValue<string>(); }
@@ -54,9 +51,20 @@ namespace DevExWpfMvvm.ViewModels
 
         public string FullName { get { return FirstName + " " + LastName; } }
 
-        void NotifyFullNameChanged()
+        private void NotifyFullNameChanged()
         {
             RaisePropertyChanged(() => FullName);
+        }
+
+        public ICommand ResetCommand { get; private set; }
+
+        public MainViewModel()
+        {
+            ResetCommand = new DelegateCommand(() =>
+            {
+                FirstName = "";
+                LastName = "";
+            });
         }
 
         [Command]
